@@ -8,15 +8,16 @@ import { AuthContext } from './AuthContext'
 
 export const ShoppingList: FC = () => {
     const auth = useContext(AuthContext)
-    const [user] = useAuthState(auth)
+    const [user, authLoading] = useAuthState(auth)
 
     const [name, setName] = useState(user?.displayName)
     const [currency, setCurrency] = useState<string | null>('')
 
     useEffect(() => {
         if (user) {
-            setName(user.displayName)
-
+            if (user.displayName) {
+                setName(user.displayName)
+            }
             const currency = localStorage.getItem(`${user.uid}-currency`)
             if (currency) {
                 setCurrency(currency)
@@ -24,15 +25,22 @@ export const ShoppingList: FC = () => {
         }
     }, [user])
 
-    const siginCallback = useCallback((id, name, currency) => {
+    const siginCallback = useCallback((name) => {
         setName(name)
-        setCurrency(currency)
     }, [])
 
     const signoutCallback = useCallback(() => {
         setName(null)
         setCurrency(null)
     }, [])
+
+    const setCurrencyCallback = useCallback((currency) => {
+        setCurrency(currency)
+    }, [])
+
+    if (authLoading) {
+        return <div>Loading</div>
+    }
 
     return user && name && currency ? (
         <div>
@@ -41,6 +49,9 @@ export const ShoppingList: FC = () => {
             <SignOut onSignOut={signoutCallback} />
         </div>
     ) : (
-        <SignIn onSignIn={siginCallback} />
+        <SignIn
+            onSignIn={siginCallback}
+            onSelectCurrency={setCurrencyCallback}
+        />
     )
 }

@@ -44,9 +44,13 @@ export const ItemList: FC<ItemListProps> = ({ currency }) => {
         [itemsRef]
     )
 
+    if (loading) {
+        return <div>Loading</div>
+    }
+
     return (
         <div>
-            {!loading && items && (
+            {items && (
                 <>
                     {items.map((i) => (
                         <Item

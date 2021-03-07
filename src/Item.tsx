@@ -29,13 +29,13 @@ export const Item: FC<ItemProps> = ({
     const [user] = useAuthState(auth)
     const [editing, setEditing] = useState(false)
 
-    const [newName, setNewName] = useState(name)
-    const [newValue, setNewValue] = useState(value)
+    const [newName, setNewName] = useState(name || '')
+    const [newValue, setNewValue] = useState(value || 0)
 
     const onEditHandler = useCallback(() => {
         if (editing) {
-            setNewName(name)
-            setNewValue(value)
+            setNewName(name || '')
+            setNewValue(value || 0)
         }
         setEditing(!editing)
     }, [editing, name, value])
