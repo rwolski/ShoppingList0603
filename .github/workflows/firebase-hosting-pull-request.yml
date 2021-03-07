@@ -16,3 +16,5 @@ jobs:
           projectId: shoppinglist0603-306805
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
+          firebaseApiKey: '${{ secrets.FIREBASE_APIKEY_SHOPPINGLIST0603 }}'
+
